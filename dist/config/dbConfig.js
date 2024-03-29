@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDB = exports.connection = void 0;
 const mysql_1 = __importDefault(require("mysql"));
 exports.connection = mysql_1.default.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'malick',
     password: 'passer',
     database: 'malick'

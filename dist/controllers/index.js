@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrdersDetails = exports.getCustomers = exports.getProducts = exports.getOrders = void 0;
+exports.getOrdersList = exports.getCustomers = exports.getProducts = exports.getOrders = void 0;
 const dbConfig_1 = require("../config/dbConfig");
 const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         dbConfig_1.connection.query('select count(*) as Nombre_de_commandes from oc_order', (err, rows) => {
-            return res.status(200).json({ Nombre_de_commandes: rows[0].Nombre_de_commandes });
+            return res.status(200).json(rows[0].Nombre_de_commandes);
         });
     }
     catch (err) {
@@ -25,7 +25,7 @@ exports.getOrders = getOrders;
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         dbConfig_1.connection.query('select count(*) as Nombre_de_produits from oc_product', (err, rows) => {
-            return res.status(200).json({ Nombre_de_produits: rows[0].Nombre_de_produits });
+            return res.status(200).json(rows[0].Nombre_de_produits);
         });
     }
     catch (err) {
@@ -36,7 +36,7 @@ exports.getProducts = getProducts;
 const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         dbConfig_1.connection.query('select count(*) as Nombre_de_clients from oc_customer', (err, rows) => {
-            return res.status(200).json({ Nombre_de_clients: rows[0].Nombre_de_clients });
+            return res.status(200).json(rows[0].Nombre_de_clients);
         });
     }
     catch (err) {
@@ -44,14 +44,14 @@ const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getCustomers = getCustomers;
-const getOrdersDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getOrdersList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        dbConfig_1.connection.query('select order_id, firstname, lastname, order_status_id from oc_order', (err, rows) => {
-            return res.status(200).json({ OrdersDetails: rows });
+        dbConfig_1.connection.query(' select order_id as id, firstname, lastname, oc_order_status.name as status from oc_order join oc_order_status on oc_order.order_status_id = oc_order_status.order_status_id', (err, rows) => {
+            return res.status(200).json(rows);
         });
     }
     catch (err) {
         throw err;
     }
 });
-exports.getOrdersDetails = getOrdersDetails;
+exports.getOrdersList = getOrdersList;
