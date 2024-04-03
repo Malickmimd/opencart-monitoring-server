@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrdersList = exports.getCustomers = exports.getProducts = exports.getOrders = void 0;
+exports.getProductCategory = exports.getOrdersList = exports.getCustomers = exports.getProducts = exports.getOrders = void 0;
 const dbConfig_1 = require("../config/dbConfig");
 const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,7 +46,7 @@ const getCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getCustomers = getCustomers;
 const getOrdersList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        dbConfig_1.connection.query(' select order_id as id, firstname, lastname, oc_order_status.name as status from oc_order join oc_order_status on oc_order.order_status_id = oc_order_status.order_status_id', (err, rows) => {
+        dbConfig_1.connection.query('select order_id as id, firstname, lastname, oc_order_status.name as status from oc_order join oc_order_status on oc_order.order_status_id = oc_order_status.order_status_id', (err, rows) => {
             return res.status(200).json(rows);
         });
     }
@@ -55,3 +55,14 @@ const getOrdersList = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getOrdersList = getOrdersList;
+const getProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        dbConfig_1.connection.query('SELECT cd.name AS category_name, COUNT(p.product_id) AS product_count FROM oc_product p JOIN oc_product_to_category ptc ON p.product_id = ptc.product_id JOIN oc_category_description cd ON ptc.category_id = cd.category_id WHERE p.quantity > 0 GROUP BY cd.name', (err, rows) => {
+            return res.status(200).json(rows);
+        });
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.getProductCategory = getProductCategory;
